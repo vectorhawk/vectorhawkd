@@ -53,6 +53,38 @@ cargo clippy
 
 Pre-alpha. M0 spike in progress. See [`../context/IMPLEMENTATION_PLAN_v3.md`](../context/IMPLEMENTATION_PLAN_v3.md) Phase RUN1.
 
+## Releasing
+
+Releases are cut by pushing a semver git tag. GitHub Actions builds release binaries for three targets
+(`aarch64-apple-darwin`, `x86_64-apple-darwin`, `x86_64-unknown-linux-gnu`) and attaches them to the
+matching GitHub Release automatically.
+
+To cut a release:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Each release attaches per-target tarballs named `vectorhawk-<version>-<triple>.tar.gz`, each containing
+`vectorhawk`, `vectorhawkd`, `vectorhawkd-shim`, `LICENSE`, and `README.md`. A SHA256 checksum file
+(`vectorhawk-<version>-<triple>.tar.gz.sha256`) is attached alongside each tarball.
+
+Pre-release tags (e.g. `v0.1.0-rc.0`) are marked as pre-releases on GitHub. Stable tags produce
+full releases.
+
+D1.2 (curl-install script) and D1.3 (Homebrew tap) consume these release artifacts. The tarball name
+and SHA256 format are the stable interface those scripts rely on.
+
+## Uninstalling
+
+- **curl install**: `rm -rf ~/.vectorhawk` and remove the `$PATH` entry the installer added to your
+  shell rc file (e.g. `~/.zshrc` or `~/.bashrc`).
+- **Homebrew**: `brew uninstall vectorhawk`
+
+Neither of these uninstall the LaunchAgent or systemd user unit. To remove those, run
+`vectorhawk daemon uninstall` before removing the binaries.
+
 ## License
 
-Apache-2.0.
+Apache-2.0. See [LICENSE](./LICENSE).
