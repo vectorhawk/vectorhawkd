@@ -51,29 +51,63 @@ cargo clippy
 
 ## Status
 
-Pre-alpha. M0 spike in progress. See [`../context/IMPLEMENTATION_PLAN_v3.md`](../context/IMPLEMENTATION_PLAN_v3.md) Phase RUN1.
+v1.0.0. See [`../context/IMPLEMENTATION_PLAN_v3.md`](../context/IMPLEMENTATION_PLAN_v3.md) for the full milestone history.
+
+## Install
+
+### Homebrew (macOS)
+
+```bash
+brew install vectorhawk/tap/vectorhawk
+```
+
+Supports macOS arm64 (Apple Silicon) and macOS x86_64 (Intel). The Homebrew formula
+selects the correct binary for your architecture automatically.
+
+### Linux
+
+A curl-install script is available for Linux x86_64:
+
+```bash
+curl -fsSL https://install.vectorhawk.ai | sh
+```
+
+This script requires EC2 distribution infrastructure to be live before it is broadly advertised.
+Check the release notes for current availability.
+
+### Manual install
+
+Download the tarball for your platform from the [GitHub Releases](../../releases) page, extract it,
+and place the binaries on your `$PATH`.
+
+## Supported targets
+
+| Target | Platform |
+|--------|----------|
+| `aarch64-apple-darwin` | macOS arm64 (Apple Silicon) |
+| `x86_64-apple-darwin` | macOS x86_64 (Intel) — cross-compiled from arm64 host |
+| `x86_64-unknown-linux-gnu` | Linux x86_64 |
 
 ## Releasing
 
-Releases are cut by pushing a semver git tag. GitHub Actions builds release binaries for three targets
-(`aarch64-apple-darwin`, `x86_64-apple-darwin`, `x86_64-unknown-linux-gnu`) and attaches them to the
-matching GitHub Release automatically.
+Releases are cut by pushing a semver git tag. GitHub Actions builds release binaries for all three
+targets and attaches them to the matching GitHub Release automatically.
 
 To cut a release:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
 Each release attaches per-target tarballs named `vectorhawk-<version>-<triple>.tar.gz`, each containing
 `vectorhawk`, `vectorhawkd`, `vectorhawkd-shim`, `LICENSE`, and `README.md`. A SHA256 checksum file
 (`vectorhawk-<version>-<triple>.tar.gz.sha256`) is attached alongside each tarball.
 
-Pre-release tags (e.g. `v0.1.0-rc.0`) are marked as pre-releases on GitHub. Stable tags produce
+Pre-release tags (e.g. `v1.0.1-rc.0`) are marked as pre-releases on GitHub. Stable tags produce
 full releases.
 
-D1.2 (curl-install script) and D1.3 (Homebrew tap) consume these release artifacts. The tarball name
+The curl-install script and Homebrew tap consume these release artifacts. The tarball name
 and SHA256 format are the stable interface those scripts rely on.
 
 ## Uninstalling
